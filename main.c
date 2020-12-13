@@ -1,11 +1,23 @@
 #include <stdio.h>
-#include <math.h>
 #include <stdlib.h>
-#include <time.h>
+#include <math.h>
+#include "fonctions.c"
 
-int main(int argc, char const *argv[])
+
+int main()
 {
-    /* code */
-    printf("POUET");
+    if (copierImage() == ERREUR) {
+        return ERREUR;
+    }
+    
+    FILE *image;
+    image = fopen("imageCodee.ppm", "rb+");
+    if (image== NULL)
+    {   
+        printf("ERREUR : ouverture de l'image impossible\n");
+    }
+    
+
     return 0;
 }
+

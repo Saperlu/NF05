@@ -7,45 +7,30 @@
 
 int main()
 {
-    if (copierImage() == ERREUR) {
-        return ERREUR;
-    }
-    
-    FILE *image;
-    image = fopen("imageCodee.ppm", "rb+");
-    if (image== NULL)
-    {   
-        printf("ERREUR : ouverture de l'image impossible\n");
-    }
-    // Va au début des cases couleurs
-    fseek(image, 16 * sizeof(char), SEEK_SET);
-
-    char message[200] = "";
-    printf("Rentrez votre message secret\n > ");
-    scanf("%s", message);
-
-    int messageBinaire[200][7];
-    for (int i = 0; i < strlen(message); i++)
+    int mode;
+    printf("\
+    Quel mode ? \n\
+       1. Codage\n\
+       2. Decodage\n\n > ");
+    scanf("%d", &mode);
+    switch (mode)
     {
-        conversionBinaire(message[i], messageBinaire[i]);
-    }
-
-
-    for (int i = 0; i < strlen(message); i++)
-    {
-        for (int j = 0; j < 7; j++)
+    case 1:
+        if (codageMessage() == ERREUR)
         {
-            int nombre = messageBinaire[i][j];
-            ecrireCaseCouleur(image, nombre);
+            return ERREUR;
         }
-        
+        break;
+    case 2:
+        if (decodageMessage() == ERREUR)
+        {
+            return ERREUR;
+        }
+        break;
+    default:
+        printf("ERRRRREUR\n");
+        break;
     }
-    
-    fclose(image);
-
-    
-    
-
     return 0;
 }
 

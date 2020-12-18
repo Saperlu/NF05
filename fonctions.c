@@ -64,7 +64,7 @@ int codageMessage() {
     char *message;
     message = (char*) malloc(tailleMaxMessage * sizeof(char));
     printf("Rentrez votre message secret de longueur maximale : %d caracteres\n > ", tailleMaxMessage);
-    scanf("%s", message);
+    fgets(message, tailleMaxMessage, stdin);
     
     int tailleMessage = strlen(message);
 
@@ -143,6 +143,7 @@ int calculTailleMaxMessage() {
     int largeur, hauteur;
     char truc[10];
     fscanf(image, "%s %d %d", truc, &largeur, &hauteur);
+    fclose(image);
     return (largeur * hauteur * 3) / 7;
 }
 

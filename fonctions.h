@@ -26,3 +26,7 @@ int decodageMessage();
 int calculTailleMessage(FILE* image);
 char conversionCaractere(int binaire[]);
 int lireCaseCouleur(FILE* image);
+
+// int trouverKIdeal(int tailleMessage, int tailleMax);
+// int trouverN(int k);
+// Perdu dans le néant distordu

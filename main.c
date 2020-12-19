@@ -7,12 +7,14 @@
 
 int main()
 {
-    int mode;
+    int mode = 2;
     printf("\
     Quel mode ? \n\
        1. Codage\n\
        2. Decodage\n\n > ");
     scanf("%d", &mode);
+    char c;
+    while((c = getchar() != '\n') && c != EOF);
     switch (mode)
     {
     case 1:

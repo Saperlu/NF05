@@ -25,6 +25,7 @@ void genererTableauOrdre(int **tableauOrdre, int tailleMessage) {
     printf("Rentrez votre clef\n");
     scanf("%ld", &clef);
     srand(clef);
+    // Permutations successives afin de "mélanger" le tableau
     for (int w=0;w<1000; w++)
     {
         for (int i = 0; i < tailleMessage; i++)
@@ -60,7 +61,7 @@ int codageMessage() {
     // TailleMax
     int tailleMaxMessage = calculTailleMaxMessage(image);
 
-    // scanf le message
+    // input le message
     char *message;
     message = (char*) malloc(tailleMaxMessage * sizeof(char));
     printf("Rentrez votre message secret de longueur maximale : %d caracteres\n > ", tailleMaxMessage);
@@ -96,7 +97,7 @@ int codageMessage() {
         }
     }
 
-    // Ecriture caractère NULL
+    // Ecriture caractère NULL à la fin du message
     seekCaseCouleur(image, tailleMessage * BITS_PAR_CARACTERE + 1);
     for (int j = 0; j < BITS_PAR_CARACTERE; j++)
     {
@@ -113,11 +114,13 @@ int copierImage() {
     size_t n;
     int buffer[TAILLE_BUFFER];
 
+    // input le nom de l'image
     char nomImage[500] = "";
     printf("Entrez le nom de l'image dans laquelle le message doit etre dissimule \n > ");
     fgets(nomImage, 500, stdin);
     nomImage[strlen(nomImage) - 1] = '\0';
 
+    // fopen l'image
     imageSource = fopen(nomImage, "rb");
     imageCodee = fopen("imageCodee.ppm", "wb+");
     if (imageSource == NULL || imageCodee == NULL)
@@ -126,6 +129,7 @@ int copierImage() {
         return ERREUR;
     }
 
+    // Copie blocs par blocs du fichier
     do
     {
         n = fread(buffer, sizeof(int), TAILLE_BUFFER, imageSource);
@@ -138,6 +142,7 @@ int copierImage() {
 } 
 
 int calculTailleMaxMessage() {
+    // Lit les métadonnées de l'image
     FILE* image;
     image = fopen("imageCodee.ppm", "r");
     if (image == NULL)
@@ -146,10 +151,11 @@ int calculTailleMaxMessage() {
         return ERREUR;
     }
     int largeur, hauteur;
-    char truc[10];
+    char truc[100];
     fscanf(image, "%s %d %d", truc, &largeur, &hauteur);
     fclose(image);
-    return (largeur * hauteur * 3) / 7;
+
+    return (largeur * hauteur * 3) / BITS_PAR_CARACTERE;
 }
 
 void charToTabBinaire(char caractere, int messageBinaire[]) {
@@ -167,6 +173,7 @@ void decimalToTabBinaire(int decimal, int binaire[], int index) {
     else
     {
         binaire[index] = decimal % 2;
+        // Fonction récursive
         decimalToTabBinaire(decimal / 2, binaire, index+1);
     }
 }
@@ -176,6 +183,7 @@ void ecrireCaseCouleur(FILE* image, int bitFaible) {
     fread(&couleur, SIZE_OF_COULEUR, 1, image);
     if (couleur%2 != bitFaible)
     {
+        // Amélioration #1
         srand(time(NULL));
         if (rand() % 2) couleur += 1;
         else couleur -= 1;
@@ -187,11 +195,13 @@ void ecrireCaseCouleur(FILE* image, int bitFaible) {
 
 
 int decodageMessage() {
+    // input le nom de l'image
     char nomImage[500] = "";
     printf("Entrez le nom de l'image dans laquelle le message est dissimule \n > ");
     fgets(nomImage, 500, stdin);
     nomImage[strlen(nomImage) - 1] = '\0';
 
+    // fopen l'image
     FILE *image;
     image = fopen(nomImage, "rb");
     if (image == NULL)
@@ -218,6 +228,7 @@ int decodageMessage() {
     printf("Votre message s'affiche sur la ligne ci-dessous : \n");
     for (int i = 0; i < tailleMessage; i++)
     {
+        // Lecture d'un caractère
         for (int j = 0; j < BITS_PAR_CARACTERE; j++)
         {
             seekCaseCouleur(image, tableauOrdre[i][j]);
@@ -238,9 +249,11 @@ int calculTailleMessage(FILE* image) {
     int tailleMessage = -1;
     char caractere;
     int caractereBinaire[BITS_PAR_CARACTERE];
+    // Cherche le caractère nul dans le fichier
     do
     {
-        for (int i = 0; i < 7; i++)
+        // Lit un caractere
+        for (int i = 0; i < BITS_PAR_CARACTERE; i++)
         {
             caractereBinaire[i] = lireCaseCouleur(image);
         }

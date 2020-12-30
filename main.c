@@ -6,6 +6,7 @@
 
 int main()
 {
+    // Menu
     int mode = 0;
     printf("\
     Quel mode ? \n\

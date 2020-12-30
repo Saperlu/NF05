@@ -4,10 +4,9 @@
 #include <string.h>
 #include "fonctions.c"
 
-
 int main()
 {
-    int mode = 2;
+    int mode = 0;
     printf("\
     Quel mode ? \n\
        1. Codage\n\

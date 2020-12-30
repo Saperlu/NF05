@@ -72,7 +72,7 @@ int codageMessage() {
     int messageBinaire[200][BITS_PAR_CARACTERE];
     for (int i = 0; i < tailleMessage; i++)
     {
-        conversionBinaire(message[i], messageBinaire[i]);
+        charToTabBinaire(message[i], messageBinaire[i]);
     }
 
     // Déclaration tableauOrdre
@@ -114,7 +114,7 @@ int copierImage() {
     int buffer[TAILLE_BUFFER];
 
     char nomImage[500] = "";
-    printf("Entrez nom image \n > ");
+    printf("Entrez le nom de l'image dans laquelle le message doit etre dissimule \n > ");
     fgets(nomImage, 500, stdin);
     nomImage[strlen(nomImage) - 1] = '\0';
 
@@ -152,14 +152,14 @@ int calculTailleMaxMessage() {
     return (largeur * hauteur * 3) / 7;
 }
 
-void conversionBinaire(char caractere, int messageBinaire[]) {
+void charToTabBinaire(char caractere, int messageBinaire[]) {
     int ascii = (int) caractere;
     for (int i = 0; i < 7; i++) messageBinaire[i] = 0;
     
-    decimalToBinaire(ascii, messageBinaire, 0);
+    decimalToTabBinaire(ascii, messageBinaire, 0);
 }
 
-void decimalToBinaire(int decimal, int binaire[], int index) {
+void decimalToTabBinaire(int decimal, int binaire[], int index) {
     if (decimal / 2 == 0)
     {
         binaire[index] = decimal;
@@ -167,7 +167,7 @@ void decimalToBinaire(int decimal, int binaire[], int index) {
     else
     {
         binaire[index] = decimal % 2;
-        decimalToBinaire(decimal / 2, binaire, index+1);
+        decimalToTabBinaire(decimal / 2, binaire, index+1);
     }
 }
 
@@ -188,7 +188,7 @@ void ecrireCaseCouleur(FILE* image, int bitFaible) {
 
 int decodageMessage() {
     char nomImage[500] = "";
-    printf("Entrez nom image \n > ");
+    printf("Entrez le nom de l'image dans laquelle le message est dissimule \n > ");
     fgets(nomImage, 500, stdin);
     nomImage[strlen(nomImage) - 1] = '\0';
 
@@ -223,7 +223,7 @@ int decodageMessage() {
             seekCaseCouleur(image, tableauOrdre[i][j]);
             caractereBinaire[j] = lireCaseCouleur(image);
         }
-        caractere = conversionCaractere(caractereBinaire);
+        caractere = TabBinaireToChar(caractereBinaire);
         printf("%c", caractere);
         
     }
@@ -244,7 +244,7 @@ int calculTailleMessage(FILE* image) {
         {
             caractereBinaire[i] = lireCaseCouleur(image);
         }
-        caractere = conversionCaractere(caractereBinaire);
+        caractere = TabBinaireToChar(caractereBinaire);
         tailleMessage++;
     } while (caractere != '\0');
     return tailleMessage;
@@ -258,7 +258,7 @@ int lireCaseCouleur(FILE* image) {
     return bitFaible;
 }
 
-char conversionCaractere(int binaire[]) {
+char TabBinaireToChar(int binaire[]) {
     int puissance, decimal = 0;
     for (int i = 0; i < 7; i++)
     {

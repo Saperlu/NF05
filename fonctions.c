@@ -53,7 +53,7 @@ int codageMessage() {
     image = fopen("imageCodee.ppm", "rb+");
     if (image== NULL)
     {   
-        printf("ERREUR : ouverture de l'image impossible\n");
+        printf("ERREUR : ouverture de l'image impossible (flag 10)\n");
     }
     seekDebutCasesCouleurCurseur(image);
 
@@ -117,7 +117,7 @@ int copierImage() {
     imageCodee = fopen("imageCodee.ppm", "wb+");
     if (imageSource == NULL || imageCodee == NULL)
     {
-        printf("ERREUR : ouverture des images impossible\n");
+        printf("ERREUR : ouverture des images impossible (flag 11)\n");
         return ERREUR;
     }
 

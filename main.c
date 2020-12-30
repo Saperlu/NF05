@@ -30,7 +30,7 @@ int main()
         }
         break;
     default:
-        printf("ERRRRREUR\n");
+        printf("Mauvais choix du menu\n");
         break;
     }
     return 0;

@@ -113,7 +113,12 @@ int copierImage() {
     size_t n;
     int buffer[TAILLE_BUFFER];
 
-    imageSource = fopen("image.ppm", "rb");
+    char nomImage[500] = "";
+    printf("Entrez nom image \n > ");
+    fgets(nomImage, 500, stdin);
+    nomImage[strlen(nomImage) - 1] = '\0';
+
+    imageSource = fopen(nomImage, "rb");
     imageCodee = fopen("imageCodee.ppm", "wb+");
     if (imageSource == NULL || imageCodee == NULL)
     {
@@ -182,8 +187,13 @@ void ecrireCaseCouleur(FILE* image, int bitFaible) {
 
 
 int decodageMessage() {
+    char nomImage[500] = "";
+    printf("Entrez nom image \n > ");
+    fgets(nomImage, 500, stdin);
+    nomImage[strlen(nomImage) - 1] = '\0';
+
     FILE *image;
-    image = fopen("imageCodee.ppm", "rb");
+    image = fopen(nomImage, "rb");
     if (image == NULL)
     {
         printf("ERREUR : Ouverture de l'image codee");
@@ -205,6 +215,7 @@ int decodageMessage() {
     char caractere;
     int caractereBinaire[BITS_PAR_CARACTERE];
 
+    printf("Votre message s'affiche sur la ligne ci-dessous : \n");
     for (int i = 0; i < tailleMessage; i++)
     {
         for (int j = 0; j < BITS_PAR_CARACTERE; j++)
